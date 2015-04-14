@@ -2,6 +2,7 @@
 require "logstash/namespace"
 require "logstash/outputs/base"
 require "stud/buffer"
+require 'json'
 
 # This output lets you output Metrics to InfluxDB
 #
@@ -110,7 +111,7 @@ class LogStash::Outputs::InfluxDB < LogStash::Outputs::Base
     event_hash = {
       'name'    => event['series'] || event.sprintf(@series),
       'columns' => influxdb_point.keys,
-      'points'  => [influxdb_point.values]
+      'points'  => [influxdb_point.values.to_a]
     }
 
     buffer_receive(event_hash)
